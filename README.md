@@ -1,2 +1,2 @@
-# PC2
-Despliegue de aplicaciones
+# Despliegue de una aplicación escalable 
+
