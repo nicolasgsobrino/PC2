@@ -45,7 +45,7 @@ def delete_application():
     Detiene la aplicación y elimina los archivos relacionados.
     """
     print("Eliminando la aplicación...")
-    subprocess.run(["pkill", "-f", "productpage_monolith.py"], check=True)
+    subprocess.run(["pkill", "-f", "deploy_app.py"], check=True)
     subprocess.run(["rm", "-rf", "practica_creativa2"], check=True)
     print("Aplicación eliminada correctamente.")
 
