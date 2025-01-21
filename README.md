@@ -90,7 +90,7 @@ Para garantizar el acceso a la aplicación desde el exterior, es necesario crear
 
 La app se puede ejecutar en la propia maquina virtual de Google Cloud ejecutando el comando normal o ejecutando acompañado de un & para tener acceso posteriormente al terminal y poder ejecutar el comando delete de manera más limpia. (sin el & la consola se queda dentro de la ejecución y hay que hacer controlC para salir). 
 
-Tambien se puede ejecutar desde un terminal remoto utilizando ssh@34.175.77.229 (ip externa)
+Tambien se puede ejecutar desde un terminal remoto utilizando ssh usuario@34.175.77.229 (ip externa) accediendo con la clave pública.
 
 ---
 
