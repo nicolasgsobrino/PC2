@@ -22,7 +22,7 @@ La instalación incluye:
 
 ## **Estructura del Script**
 
-El script desarrollado (`deploy_mapp.py`) realiza las siguientes funciones:
+El script desarrollado (`deploy_app.py`) realiza las siguientes funciones:
 
 1. **`install_dependencies()`**: Instala paquetes esenciales como Python, Pip y Git.
 2. **`clone_repository()`**: Clona el repositorio de la aplicación desde GitHub.
