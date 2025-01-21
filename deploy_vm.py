@@ -9,7 +9,7 @@ def install_dependencies():
     print("Instalando dependencias...")
     subprocess.run(["sudo", "apt", "update"], check=True)
     subprocess.run(["sudo", "apt", "upgrade", "-y"], check=True)
-    subprocess.run(["sudo", "apt", "install", "-y", "python3", "python3-pip", "git"], check=True
+    subprocess.run(["sudo", "apt", "install", "-y", "python3", "python3-pip", "git"], check=True)
     clone_repository()
     subprocess.run(["pip3", "install", "-r", "bookinfo/src/productpage/requirements.txt"], check=True)
 
@@ -40,13 +40,14 @@ def configure_application(group_num, port):
     print(f"Configurando la aplicación con el grupo {group_num} y puerto {port}...")
     subprocess.run(["nohup", "python3", "bookinfo/src/productpage/productpage_monolith.py", str(port), "&"], check=True)
 
-def stop_application():
+def delete_application():
     """
-    Detiene la aplicación eliminando los procesos en ejecución.
+    Detiene la aplicación y elimina los archivos relacionados.
     """
-    print("Deteniendo la aplicación...")
+    print("Eliminando la aplicación...")
     subprocess.run(["pkill", "-f", "productpage_monolith.py"], check=True)
-    print("Aplicación detenida.")
+    subprocess.run(["rm", "-rf", "practica_creativa2"], check=True)
+    print("Aplicación eliminada correctamente.")
 
 def deploy_application(group_num, port):
     """
@@ -58,20 +59,21 @@ def deploy_application(group_num, port):
 
 def main():
     """
-    Punto de entrada principal del script. Maneja las opciones de despliegue y parada.
+    Punto de entrada principal del script. Maneja las opciones de despliegue y eliminación.
     """
     group_num = os.environ.get("GROUP_NUM", "14")
     port = os.environ.get("APP_PORT", "9080")
 
     if len(sys.argv) == 1:
         deploy_application(group_num, port)
-    elif len(sys.argv) == 2 and sys.argv[1] == "stop":
-        stop_application()
+    elif len(sys.argv) == 2 and sys.argv[1] == "delete":
+        delete_application()
     else:
-        print("Use: python3 script.py [stop]")
+        print("Uso: python3 script.py [delete]")
         sys.exit(1)
 
 if __name__ == "__main__":
     main()
+
 
 
