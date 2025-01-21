@@ -1,4 +1,4 @@
-# Despliegue de una aplicación escalable.  
+# Despliegue de una aplicación escalable. 
 
 Nicolás García Sobrino nicolas.garciasobrino@alumnos.upm.es,
 Santiago Rayán Castro 
@@ -6,13 +6,10 @@ Javier de Ponte Hernando.
 
 ---
 
-# Bloque 1. Documentación del Proceso de Despliegue de la Aplicación Monolítica en VM
+# Bloque 1. Despliegue de la Aplicación Monolítica en VM de Google Cloud
 
 Este documento detalla el proceso de desarrollo del script en Python para desplegar una aplicación monolítica en una máquina virtual pesada, conforme a los requisitos de la práctica creativa 2 utilizando Google Cloud como infraestructura de VM. 
 
----
-
-## **1. Descripción del Proyecto**
 El objetivo es desplegar una aplicación monolítica escrita en Python sobre una máquina virtual en Google Cloud Platform (GCP). La aplicación consiste en una página web que muestra información sobre libros y se ejecuta mediante el archivo `productpage_monolith.py`.
 
 La instalación incluye:
@@ -23,7 +20,7 @@ La instalación incluye:
 
 ---
 
-## **2. Estructura del Script**
+## *. Estructura del Script**
 
 El script desarrollado (`deploy_mapp.py`) realiza las siguientes funciones:
 
@@ -37,7 +34,7 @@ El script desarrollado (`deploy_mapp.py`) realiza las siguientes funciones:
 
 ---
 
-## **3. Uso del Script**
+## *. Uso del Script**
 
 ### **Desplegar la Aplicación**
 Para iniciar la aplicación en la máquina virtual, ejecutar:
@@ -72,7 +69,7 @@ Este comando realiza:
 
 ---
 
-## **4. Configuración de Variables de Entorno**
+## . Configuración de Variables de Entorno**
 El script permite personalizar la configuración a través de variables de entorno:
 
 ```bash
