@@ -36,7 +36,6 @@ El script desarrollado (`deploy_mapp.py`) realiza las siguientes funciones:
 
 ## ** Uso del Script**
 
-### **Desplegar la Aplicación**
 Para iniciar la aplicación en la máquina virtual, ejecutar:
 
 ```bash
@@ -55,8 +54,6 @@ La aplicación será accesible en la URL:
 http://34.175.77.229:9080/productpage
 ```
 
-
-### **Eliminar la Aplicación**
 Para detener la aplicación y eliminar los archivos generados, ejecutar:
 
 ```bash
@@ -69,7 +66,7 @@ Este comando realiza:
 
 ---
 
-## ** Configuración de Variables de Entorno**
+## **Configuración de Variables de Entorno**
 El script permite personalizar la configuración a través de variables de entorno:
 
 ```bash
@@ -83,13 +80,13 @@ Las variables disponibles son:
 
 ---
 
-## ** Configuración de Firewall en GCP**
+## **Configuración de Firewall en GCP**
 Para garantizar el acceso a la aplicación desde el exterior, es necesario crear una regla de firewall para permitir el puerto 9080 ajustada manualmente en Google Cloud
 <img width="1285" alt="Captura de pantalla 2025-01-21 a las 18 35 25" src="https://github.com/user-attachments/assets/1825a7a3-7852-4c30-a222-cd7d48755f99" />
 
 ---
 
-## **. Consideraciones Finales**
+## **Consideraciones Finales**
 
 La app se puede ejecutar en la propia maquina virtual de Google Cloud ejecutando el comando normal o ejecutando acompañado de un & para tener acceso posteriormente al terminal y poder ejecutar el comando delete de manera más limpia. (sin el & la consola se queda dentro de la ejecución y hay que hacer controlC para salir). 
 
