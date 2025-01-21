@@ -68,7 +68,7 @@ def main():
     elif len(sys.argv) == 2 and sys.argv[1] == "stop":
         stop_application()
     else:
-        print("Uso: python3 script.py [stop]")
+        print("Use: python3 script.py [stop]")
         sys.exit(1)
 
 if __name__ == "__main__":
