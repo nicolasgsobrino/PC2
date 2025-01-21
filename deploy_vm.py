@@ -9,7 +9,8 @@ def install_dependencies():
     print("Instalando dependencias...")
     subprocess.run(["sudo", "apt", "update"], check=True)
     subprocess.run(["sudo", "apt", "upgrade", "-y"], check=True)
-    subprocess.run(["sudo", "apt", "install", "-y", "python3", "python3-pip", "git"], check=True)
+    subprocess.run(["sudo", "apt", "install", "-y", "python3", "python3-pip", "git"], check=True
+    clone_repository()
     subprocess.run(["pip3", "install", "-r", "bookinfo/src/productpage/requirements.txt"], check=True)
 
 def clone_repository():
@@ -52,7 +53,6 @@ def deploy_application(group_num, port):
     Despliega la aplicación en la máquina virtual.
     """
     install_dependencies()
-    clone_repository()
     configure_application(group_num, port)
     print(f"Aplicación desplegada en http://<ip-publica>:{port}/productpage")
 
