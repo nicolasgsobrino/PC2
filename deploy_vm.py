@@ -1,5 +1,6 @@
 import os
 import subprocess
+import sys
 
 def install_dependencies():
     """
@@ -8,7 +9,7 @@ def install_dependencies():
     print("Instalando dependencias...")
     subprocess.run(["sudo", "apt", "update"], check=True)
     subprocess.run(["sudo", "apt", "upgrade", "-y"], check=True)
-    subprocess.run(["sudo", "apt", "install", "-y", "python3", "python3-pip", "git", "ufw"], check=True)
+    subprocess.run(["sudo", "apt", "install", "-y", "python3", "python3-pip", "git"], check=True)
     subprocess.run(["pip3", "install", "-r", "bookinfo/src/productpage/requirements.txt"], check=True)
 
 def clone_repository():
@@ -38,32 +39,39 @@ def configure_application(group_num, port):
     print(f"Configurando la aplicación con el grupo {group_num} y puerto {port}...")
     subprocess.run(["nohup", "python3", "bookinfo/src/productpage/productpage_monolith.py", str(port), "&"], check=True)
 
-def open_firewall(port):
+def stop_application():
     """
-    Abre el puerto en el firewall de la VM para permitir el acceso externo.
+    Detiene la aplicación eliminando los procesos en ejecución.
     """
-    print(f"Abriendo el puerto {port} en el firewall...")
-    subprocess.run(["sudo", "ufw", "allow", str(port)], check=True)
+    print("Deteniendo la aplicación...")
+    subprocess.run(["pkill", "-f", "productpage_monolith.py"], check=True)
+    print("Aplicación detenida.")
 
 def deploy_application(group_num, port):
     """
-    Despliega la aplicación en la máquina virtual, instalando dependencias,
-    clonando el repositorio, configurando la aplicación y abriendo el firewall.
+    Despliega la aplicación en la máquina virtual.
     """
     install_dependencies()
     clone_repository()
     configure_application(group_num, port)
-    open_firewall(port)
     print(f"Aplicación desplegada en http://<ip-publica>:{port}/productpage")
 
 def main():
     """
-    Punto de entrada principal del script. Obtiene valores de entorno
-    y despliega la aplicación.
+    Punto de entrada principal del script. Maneja las opciones de despliegue y parada.
     """
-    group_num = os.environ.get("GROUP_NUM", "14")  # Número de grupo por defecto 14
-    port = os.environ.get("APP_PORT", "9080")     # Puerto por defecto 9080
-    deploy_application(group_num, port)
+    group_num = os.environ.get("GROUP_NUM", "14")
+    port = os.environ.get("APP_PORT", "9080")
+
+    if len(sys.argv) == 1:
+        deploy_application(group_num, port)
+    elif len(sys.argv) == 2 and sys.argv[1] == "stop":
+        stop_application()
+    else:
+        print("Uso: python3 script.py [stop]")
+        sys.exit(1)
 
 if __name__ == "__main__":
     main()
+
+
