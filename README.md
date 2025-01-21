@@ -1,4 +1,7 @@
-# Despliegue de una aplicación escalable 
+# Despliegue de una aplicación escalable.  
+
+Nicolás García Sobrino nicolas.garciasobrino@alumnos.upm.es, Santiago Rayán Castro y Javier de Ponte Hernando. 
+---
 
 # Bloque 1. Documentación del Proceso de Despliegue de la Aplicación Monolítica en VM
 
