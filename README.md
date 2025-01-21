@@ -20,7 +20,7 @@ La instalación incluye:
 
 ---
 
-## ** Estructura del Script**
+## **Estructura del Script**
 
 El script desarrollado (`deploy_mapp.py`) realiza las siguientes funciones:
 
@@ -34,7 +34,7 @@ El script desarrollado (`deploy_mapp.py`) realiza las siguientes funciones:
 
 ---
 
-## ** Uso del Script**
+## **Uso del Script**
 
 Para iniciar la aplicación en la máquina virtual, ejecutar:
 
