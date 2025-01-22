@@ -3,32 +3,32 @@ import subprocess
 import platform
 import sys
 
-# Configuración
-REPO_URL = "https://github.com/CDPS-ETSIT/practica_creativa2.git"
-GROUP_NUM = "14"
-IMAGE_NAME = f"product-page/{GROUP_NUM}"
-CONTAINER_NAME = f"product-page-{GROUP_NUM}"
-PORT = "5080"
+# Configuración de variables globales
+REPO_URL = "https://github.com/CDPS-ETSIT/practica_creativa2.git"  # URL del repositorio
+GROUP_NUM = "14"  # Número de grupo
+IMAGE_NAME = f"product-page/{GROUP_NUM}"  # Nombre de la imagen Docker
+CONTAINER_NAME = f"product-page-{GROUP_NUM}"  # Nombre del contenedor Docker
+PORT = "5080"  # Puerto en el que se ejecutará la aplicación
 
 def check_docker():
     """Verifica si Docker está instalado en el sistema."""
     try:
         subprocess.run(["docker", "--version"], check=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-        print("✅ Docker está instalado correctamente.")
+        print(" Docker está instalado correctamente.")
         return True
     except FileNotFoundError:
-        print("❌ Docker no está instalado en el sistema.")
+        print(" Docker no está instalado en el sistema.")
         return False
 
 def install_docker():
     """Intenta instalar Docker automáticamente en sistemas Linux."""
     if platform.system() == "Linux":
-        print("⚙️  Instalando Docker en Linux...")
+        print("  Instalando Docker en Linux...")
         subprocess.run(["sudo", "apt", "update"])
         subprocess.run(["sudo", "apt", "install", "-y", "docker.io"])
-        print("✅ Docker ha sido instalado. Verifica la instalación ejecutando 'docker --version'.")
+        print(" Docker ha sido instalado. Verifica la instalación ejecutando 'docker --version'.")
     else:
-        print("❌ La instalación automática de Docker solo está disponible en Linux.")
+        print(" La instalación automática de Docker solo está disponible en Linux.")
         print("Por favor, instala Docker manualmente desde https://www.docker.com/get-started")
         sys.exit(1)
 
@@ -53,12 +53,11 @@ def create_dockerfile():
     RUN pip install --no-cache-dir -r /app/requirements.txt
     ENV GROUP_NUM={GROUP_NUM}
     EXPOSE {PORT}
-    CMD ["sh", "-c", "sed -i 's|BookInfo Sample|Grupo {GROUP_NUM}|g' /app/templates/productpage.html && python3 /app/productpage_monolith.py {PORT}"]
+    CMD ["sh", "-c", "sed -i 's|BookInfo Sample|Grupo ${{GROUP_NUM}}|g' /app/templates/productpage.html && python3 /app/productpage_monolith.py {PORT}"]
     """
     with open("practica_creativa2/Dockerfile", "w") as f:
         f.write(dockerfile_content.strip())
-    print("✅ Dockerfile creado correctamente.")
-
+    print(" Dockerfile creado correctamente.")
 
 def build_image():
     """Construye la imagen Docker a partir del Dockerfile."""
@@ -77,15 +76,15 @@ def run_container():
         "-e", f"GROUP_NUM={GROUP_NUM}",
         "-d", IMAGE_NAME
     ])
-    print(f"✅ La aplicación está disponible en http://localhost:{PORT}")
+    print(f" La aplicación está disponible en http://localhost:{PORT}")
 
 def delete_container():
     """Detiene y elimina el contenedor de Docker."""
-    print(f"🛑 Eliminando el contenedor {CONTAINER_NAME}...")
+    print(f" Eliminando el contenedor {CONTAINER_NAME}...")
     subprocess.run(["docker", "stop", CONTAINER_NAME], stderr=subprocess.PIPE)
     subprocess.run(["docker", "rm", CONTAINER_NAME], stderr=subprocess.PIPE)
     subprocess.run(["rm", "-rf", "practica_creativa2"])
-    print("✅ Contenedor y aplicación eliminados correctamente.")
+    print("Contenedor y aplicación eliminados correctamente.")
 
 def main():
     """Función principal para manejar las opciones del usuario."""
@@ -94,7 +93,7 @@ def main():
         if install_choice == 's':
             install_docker()
         else:
-            print("🚫 No se puede continuar sin Docker.")
+            print(" No se puede continuar sin Docker.")
             sys.exit(1)
 
     action = input("¿Qué deseas hacer? (deploy/delete): ").strip().lower()
@@ -106,7 +105,7 @@ def main():
     elif action == "delete":
         delete_container()
     else:
-        print("❌ Opción no válida. Usa 'deploy' o 'delete'.")
+        print(" Opción no válida. Usa 'deploy' o 'delete'.")
 
 if __name__ == "__main__":
     main()
