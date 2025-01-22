@@ -90,20 +90,14 @@ Para garantizar el acceso a la aplicación desde el exterior, es necesario crear
 
 La app se puede ejecutar en la propia maquina virtual de Google Cloud ejecutando el comando normal o ejecutando acompañado de un & para tener acceso posteriormente al terminal y poder ejecutar el comando delete de manera más limpia. (sin el & la consola se queda dentro de la ejecución y hay que hacer controlC para salir). 
 
+---
 
 # Bloque 2. Despliegue de Aplicación Monolítica usando Docker
 
 Este documento proporciona una guía paso a paso para desplegar una aplicación monolítica utilizando Docker de forma automatizada mediante un script en Python.
-
----
-
-## **Requisitos Previos**
-
-Antes de ejecutar el script, asegúrate de tener instalados los siguientes componentes:
-
-- **Python 3.x** (para ejecutar el script)
-- **Docker** (para la virtualización ligera)
-- **Git** (para clonar el repositorio de la aplicación)
+El scrypt realiza todo, comprueba que docker este descargado, si no, lo instala, clona el repositorio, ejecuta los comando correspondientes y despliega la app en local. 
+Tambien se puede desplegar en la VM de google cloud como hemos hecho en el bloque1 pero en este caso queríamos cambiar para ver otro enfoque. 
+En el caso de desplegar en VM habría que subir los archivos y añadir una nueva regla del FW para que permita peticiones al puerto 5080. 
 
 ---
 
@@ -112,28 +106,12 @@ Antes de ejecutar el script, asegúrate de tener instalados los siguientes compo
 El script automatiza las siguientes tareas:
 
 1. **Verificación de Docker:** Comprueba si Docker está instalado.
-2. **Instalación de Docker (opcional):** Instala Docker si no está disponible (solo en Linux).
+2. **Instalación de Docker (opcional):** Instala Docker si no está disponible (solo en Linux). 
 3. **Clonación del Repositorio:** Descarga la aplicación desde GitHub.
 4. **Creación del Dockerfile:** Genera el Dockerfile para construir la imagen.
 5. **Construcción de la Imagen Docker:** Construye la imagen de la aplicación.
 6. **Ejecución del Contenedor:** Levanta la aplicación con la configuración correcta.
 7. **Eliminación del Contenedor:** Permite borrar la aplicación desplegada.
-
----
-
-## **Estructura del Proyecto**
-
-El script gestiona la siguiente estructura del proyecto:
-
-```
-practica_creativa2
-   |-- bookinfo
-       |-- src
-           |-- productpage
-               |-- productpage_monolith.py
-               |-- templates
-                   |-- productpage.html
-```
 
 ---
 
