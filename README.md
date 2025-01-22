@@ -1,4 +1,4 @@
-# Despliegue de una aplicación escalable. 
+# Distintos despliegues de aplicaciones escalables. 
 
 Nicolás García Sobrino nicolas.garciasobrino@alumnos.upm.es,
 Santiago Rayán Castro ,
