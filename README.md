@@ -191,6 +191,8 @@ Elimina el contenedor desplegado y borra el repositorio.
 ### `main()`
 Controla la ejecución del script según la acción elegida por el usuario.
 
+<img width="1433" alt="Captura de pantalla 2025-01-22 a las 18 44 47" src="https://github.com/user-attachments/assets/23c041e4-4bd1-4dc0-a0a0-1ef6af777255" />
+
 ---
 
 ## **Eliminación del Contenedor**
