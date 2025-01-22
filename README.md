@@ -1,7 +1,7 @@
 # Despliegue de una aplicación escalable. 
 
 Nicolás García Sobrino nicolas.garciasobrino@alumnos.upm.es,
-Santiago Rayán Castro 
+Santiago Rayán Castro ,
 Javier de Ponte Hernando. 
 
 ---
