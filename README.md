@@ -90,6 +90,154 @@ Para garantizar el acceso a la aplicación desde el exterior, es necesario crear
 
 La app se puede ejecutar en la propia maquina virtual de Google Cloud ejecutando el comando normal o ejecutando acompañado de un & para tener acceso posteriormente al terminal y poder ejecutar el comando delete de manera más limpia. (sin el & la consola se queda dentro de la ejecución y hay que hacer controlC para salir). 
 
+
+# Bloque 2. Despliegue de Aplicación Monolítica usando Docker
+
+Este documento proporciona una guía paso a paso para desplegar una aplicación monolítica utilizando Docker de forma automatizada mediante un script en Python.
+
+---
+
+## **Requisitos Previos**
+
+Antes de ejecutar el script, asegúrate de tener instalados los siguientes componentes:
+
+- **Python 3.x** (para ejecutar el script)
+- **Docker** (para la virtualización ligera)
+- **Git** (para clonar el repositorio de la aplicación)
+
+---
+
+## **Descripción del Script**
+
+El script automatiza las siguientes tareas:
+
+1. **Verificación de Docker:** Comprueba si Docker está instalado.
+2. **Instalación de Docker (opcional):** Instala Docker si no está disponible (solo en Linux).
+3. **Clonación del Repositorio:** Descarga la aplicación desde GitHub.
+4. **Creación del Dockerfile:** Genera el Dockerfile para construir la imagen.
+5. **Construcción de la Imagen Docker:** Construye la imagen de la aplicación.
+6. **Ejecución del Contenedor:** Levanta la aplicación con la configuración correcta.
+7. **Eliminación del Contenedor:** Permite borrar la aplicación desplegada.
+
+---
+
+## **Estructura del Proyecto**
+
+El script gestiona la siguiente estructura del proyecto:
+
+```
+practica_creativa2
+   |-- bookinfo
+       |-- src
+           |-- productpage
+               |-- productpage_monolith.py
+               |-- templates
+                   |-- productpage.html
+```
+
+---
+
+## **Uso del Script**
+
+1. Clona este repositorio o guarda el script Python en tu entorno.
+
+2. Ejecuta el script:
+
+    ```bash
+    python3 deploy_docker.py
+    ```
+
+3. Selecciona la acción deseada:
+
+    - Para desplegar la aplicación, escribe: `deploy`
+    - Para eliminar la aplicación, escribe: `delete`
+
+4. Una vez desplegado, accede a la aplicación a través de:
+
+    ```
+    http://localhost:5080
+    ```
+
+---
+
+## **Descripción del Dockerfile Generado**
+
+El Dockerfile generado por el script contiene los siguientes pasos:
+
+```dockerfile
+FROM python:3.7.7-slim
+WORKDIR /app
+COPY bookinfo/src/productpage /app
+RUN pip install --upgrade urllib3 chardet requests
+RUN pip install --no-cache-dir -r /app/requirements.txt
+ENV GROUP_NUM=14
+EXPOSE 5080
+CMD ["sh", "-c", "sed -i 's|BookInfo Sample|Grupo ${GROUP_NUM}|g' /app/templates/productpage.html && python3 /app/productpage_monolith.py 5080"]
+```
+
+### **Explicación de las instrucciones:**
+
+- `FROM python:3.7.7-slim`: Usa una imagen base ligera de Python.
+- `WORKDIR /app`: Establece el directorio de trabajo dentro del contenedor.
+- `COPY bookinfo/src/productpage /app`: Copia el código fuente de la aplicación.
+- `RUN pip install`: Instala las dependencias necesarias.
+- `ENV GROUP_NUM=14`: Establece una variable de entorno con el número del grupo.
+- `EXPOSE 5080`: Expone el puerto en el contenedor.
+- `CMD [...]`: Ejecuta la aplicación reemplazando el texto "BookInfo Sample" por "Grupo 14".
+
+---
+
+## **Funciones Principales del Script**
+
+### `check_docker()`
+Verifica si Docker está instalado en el sistema.
+
+### `install_docker()`
+Instala Docker en sistemas Linux si no está presente.
+
+### `clone_repository()`
+Clona el repositorio de la aplicación si no existe, o lo actualiza si ya está clonado.
+
+### `create_dockerfile()`
+Genera un Dockerfile para construir la imagen Docker.
+
+### `build_image()`
+Construye la imagen Docker a partir del Dockerfile generado.
+
+### `run_container()`
+Ejecuta un contenedor basado en la imagen creada.
+
+### `delete_container()`
+Elimina el contenedor desplegado y borra el repositorio.
+
+### `main()`
+Controla la ejecución del script según la acción elegida por el usuario.
+
+---
+
+## **Eliminación del Contenedor**
+
+Para detener y eliminar la aplicación de Docker, puedes ejecutar el script y elegir la opción `delete` o hacerlo manualmente con los siguientes comandos:
+
+```bash
+# Detener el contenedor
+    docker stop product-page-14
+
+# Eliminar el contenedor
+    docker rm product-page-14
+
+# Eliminar la imagen
+    docker rmi product-page/14
+```
+
+---
+
+## **Conclusión**
+
+Este script proporciona una forma sencilla de automatizar el despliegue de una aplicación monolítica en Docker. Se encarga de todas las tareas necesarias, desde la instalación de dependencias hasta la ejecución de la aplicación en un contenedor accesible desde el navegador.
+
+
+
 Tambien se puede ejecutar desde un terminal remoto utilizando ssh usuario@34.175.77.229 (ip externa) accediendo con la clave pública.
 
 ---
