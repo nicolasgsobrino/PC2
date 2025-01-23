@@ -3,12 +3,12 @@ import subprocess
 import platform
 import sys
 
-# Configuración de variables globales
-REPO_URL = "https://github.com/CDPS-ETSIT/practica_creativa2.git"  # URL del repositorio
-GROUP_NUM = "14"  # Número de grupo
-IMAGE_NAME = f"product-page/{GROUP_NUM}"  # Nombre de la imagen Docker
-CONTAINER_NAME = f"product-page-{GROUP_NUM}"  # Nombre del contenedor Docker
-PORT = "5080"  # Puerto en el que se ejecutará la aplicación
+# Configuración
+REPO_URL = "https://github.com/CDPS-ETSIT/practica_creativa2.git"
+GROUP_NUM = "14"
+IMAGE_NAME = f"product-page/{GROUP_NUM}"
+CONTAINER_NAME = f"product-page-{GROUP_NUM}"
+PORT = "5080"
 
 def check_docker():
     """Verifica si Docker está instalado en el sistema."""
@@ -23,7 +23,7 @@ def check_docker():
 def install_docker():
     """Intenta instalar Docker automáticamente en sistemas Linux."""
     if platform.system() == "Linux":
-        print("  Instalando Docker en Linux...")
+        print("⚙️  Instalando Docker en Linux...")
         subprocess.run(["sudo", "apt", "update"])
         subprocess.run(["sudo", "apt", "install", "-y", "docker.io"])
         print(" Docker ha sido instalado. Verifica la instalación ejecutando 'docker --version'.")
@@ -53,22 +53,23 @@ def create_dockerfile():
     RUN pip install --no-cache-dir -r /app/requirements.txt
     ENV GROUP_NUM={GROUP_NUM}
     EXPOSE {PORT}
-    CMD ["sh", "-c", "sed -i 's|BookInfo Sample|Grupo ${{GROUP_NUM}}|g' /app/templates/productpage.html && python3 /app/productpage_monolith.py {PORT}"]
+    CMD ["sh", "-c", "sed -i 's|BookInfo Sample|Grupo {GROUP_NUM}|g' /app/templates/productpage.html && python3 /app/productpage_monolith.py {PORT}"]
     """
     with open("practica_creativa2/Dockerfile", "w") as f:
         f.write(dockerfile_content.strip())
     print(" Dockerfile creado correctamente.")
 
+
 def build_image():
     """Construye la imagen Docker a partir del Dockerfile."""
     os.chdir("practica_creativa2")
-    print("🚀 Construyendo la imagen Docker...")
+    print(" Construyendo la imagen Docker...")
     subprocess.run(["docker", "build", "-t", IMAGE_NAME, "."])
     os.chdir("..")
 
 def run_container():
     """Ejecuta el contenedor Docker con las configuraciones necesarias."""
-    print(f"🚀 Ejecutando el contenedor {CONTAINER_NAME} en el puerto {PORT}...")
+    print(f" Ejecutando el contenedor {CONTAINER_NAME} en el puerto {PORT}...")
     subprocess.run([
         "docker", "run",
         "--name", CONTAINER_NAME,
@@ -84,7 +85,7 @@ def delete_container():
     subprocess.run(["docker", "stop", CONTAINER_NAME], stderr=subprocess.PIPE)
     subprocess.run(["docker", "rm", CONTAINER_NAME], stderr=subprocess.PIPE)
     subprocess.run(["rm", "-rf", "practica_creativa2"])
-    print("Contenedor y aplicación eliminados correctamente.")
+    print(" Contenedor y aplicación eliminados correctamente.")
 
 def main():
     """Función principal para manejar las opciones del usuario."""
@@ -109,3 +110,4 @@ def main():
 
 if __name__ == "__main__":
     main()
+
