@@ -258,12 +258,34 @@ La aplicación se ha dividido en los siguientes microservicios:
 
 ---
 
+## **Despliegue en Google Cloud**
+
+El despliegue de la aplicación se realiza en una máquina virtual de **Google Cloud Platform (GCP)**. Asegúrate de tener acceso a la VM y permisos para ejecutar Docker.
+
+### **1. Acceder a la VM de Google Cloud**
+
+Primero, inicia sesión en tu VM de Google Cloud usando SSH:
+
+```bash
+gcloud compute ssh <usuario>@<nombre-de-la-vm> --zone=<zona>
+```
+
+Ejemplo:
+
+```bash
+gcloud compute ssh nicolasgsobrino@bloque3-vm --zone=europe-west1-b
+```
+
+O subiendo los archivos desde local en el terminal de la maquina virtual con la opción (subir archivos).
+
+---
+
 ## **Instalación y despliegue**
 
-Para desplegar la aplicación, utiliza el script `deploy_docker.py` que permite gestionar todo el proceso de construcción y ejecución.
+Para desplegar la aplicación en la VM de Google Cloud, utiliza el script `deploy_docker.py`, que permite gestionar todo el proceso de construcción y ejecución.
 
-### **1. Requisitos previos**
-Asegúrate de tener instalados los siguientes programas en tu sistema:
+### **2. Requisitos previos**
+Asegúrate de que la VM en Google Cloud tenga instalados los siguientes programas:
 
 - **Docker**  
   ```bash
@@ -287,7 +309,7 @@ El script `deploy_docker.py` permite realizar las siguientes operaciones:
 ### **1. Construcción y despliegue de la aplicación**
 
 ```bash
-python3 deploy_docker.py build
+python3 deploy_docker.py start
 ```
 
 Este comando realiza los siguientes pasos:
@@ -299,17 +321,7 @@ Este comando realiza los siguientes pasos:
 
 ---
 
-### **2. Levantar la aplicación (si ya está construida)**
-
-```bash
-python3 deploy_docker.py start
-```
-
-Este comando inicia los contenedores en segundo plano usando Docker Compose.
-
----
-
-### **3. Detener la aplicación**
+### **2. Detener la aplicación**
 
 ```bash
 python3 deploy_docker.py stop
@@ -319,7 +331,7 @@ Este comando detiene los contenedores sin eliminar los volúmenes de datos.
 
 ---
 
-### **4. Eliminar la aplicación y limpiar el entorno**
+### **3. Eliminar la aplicación y limpiar el entorno**
 
 ```bash
 python3 deploy_docker.py clean
@@ -350,7 +362,13 @@ Este comando realiza las siguientes acciones:
 
 ## **Verificación del despliegue**
 
-Una vez que la aplicación está en ejecución, puedes acceder a la interfaz web de la aplicación mediante:
+Una vez que la aplicación está en ejecución en la VM de Google Cloud, puedes acceder a la interfaz web de la aplicación mediante:
+
+```
+http://<IP-EXTERNA>:9080
+```
+
+Ejemplo (según nuestro despliegue):
 
 ```
 http://34.175.221.139:9080
@@ -358,26 +376,201 @@ http://34.175.221.139:9080
 
 ---
 
-## **Solución de problemas**
+Aquí tienes el contenido para el archivo **README.md** del Bloque 4:
 
-Si encuentras algún problema, puedes hacer lo siguiente:
+---
 
-1. **Verificar el estado de los contenedores:**
+# **Despliegue de la aplicación en microservicios usando Kubernetes (Bloque 4)**
+
+Este proyecto implementa el despliegue de una aplicación basada en microservicios utilizando **Kubernetes**, facilitando la orquestación y gestión de contenedores en un clúster de Google Kubernetes Engine (**GKE**).
+
+---
+
+## **Estructura del proyecto**
+
+```
+Bloque_4/
+│-- deploy_k8s.py                 # Script de automatización para despliegue en Kubernetes
+│-- productpage-deployment.yaml    # Despliegue del servicio Product Page
+│-- details-deployment.yaml        # Despliegue del servicio Details
+│-- ratings-deployment.yaml        # Despliegue del servicio Ratings
+│-- reviews-v1-deployment.yaml     # Despliegue de Reviews versión 1
+│-- reviews-v2-deployment.yaml     # Despliegue de Reviews versión 2
+│-- reviews-v3-deployment.yaml     # Despliegue de Reviews versión 3
+│-- productpage-svc.yaml            # Configuración del servicio Product Page
+│-- reviews-svc.yaml                 # Configuración del servicio Reviews
+```
+
+---
+
+## **Microservicios incluidos**
+
+La aplicación está compuesta por los siguientes microservicios:
+
+1. **Product Page** (Python): Página de inicio de la aplicación.
+2. **Details** (Ruby): Proporciona detalles adicionales de los productos.
+3. **Reviews** (Java): Muestra reseñas de los productos en diferentes versiones.
+4. **Ratings** (NodeJS): Proporciona la puntuación de los productos.
+
+---
+
+## **Despliegue en Google Kubernetes Engine (GKE)**
+
+El despliegue de la aplicación se realiza en un clúster de **Google Kubernetes Engine (GKE)**. Para ello, se deben seguir los siguientes pasos.
+
+---
+
+## **Instalación y configuración en GKE**
+
+### **1. Prerrequisitos**
+
+Asegúrate de que tienes configuradas las herramientas necesarias en tu máquina virtual de Google Cloud:
+
+- **Instalar Google Cloud SDK y herramientas de Kubernetes (kubectl):**
+
+  ```bash
+  sudo apt update
+  sudo apt install google-cloud-sdk kubectl -y
+  ```
+
+- **Autenticarte en Google Cloud:**
+
+  ```bash
+  gcloud auth login
+  gcloud config set project <tu-proyecto-id>
+  ```
+
+- **Crear un clúster de Kubernetes en GKE:**
+
+  ```bash
+  gcloud container clusters create bloque4-cluster --num-nodes=3 --zone=europe-west1-b
+  ```
+
+- **Conectar tu terminal con el clúster:**
+
+  ```bash
+  gcloud container clusters get-credentials bloque4-cluster --zone=europe-west1-b
+  ```
+
+---
+
+## **Uso del script**
+
+El script `deploy_k8s.py` permite gestionar el despliegue y eliminación de los microservicios en Kubernetes de manera sencilla.
+
+### **1. Desplegar la aplicación**
+
+```bash
+python3 deploy_k8s.py deploy
+```
+
+Este comando realiza las siguientes tareas:
+
+- Aplica los archivos YAML para crear los deployments de todos los microservicios.
+- Crea los servicios correspondientes para permitir la comunicación entre los pods.
+- Verifica el estado de los pods desplegados.
+
+---
+
+### **2. Eliminar la aplicación**
+
+```bash
+python3 deploy_k8s.py delete
+```
+
+Este comando realiza las siguientes acciones:
+
+- Elimina los deployments y services creados.
+- Verifica que no queden recursos activos en el clúster.
+
+---
+
+## **Verificación del despliegue**
+
+1. **Comprobar el estado de los pods en Kubernetes:**
+
    ```bash
-   docker ps -a
+   kubectl get pods
    ```
 
-2. **Ver los registros de un contenedor específico:**
+   Todos los pods deben estar en estado `Running`.
+
+2. **Verificar los servicios disponibles y su IP externa:**
+
    ```bash
-   docker logs productpage-14
+   kubectl get svc
    ```
 
-3. **Eliminar todos los contenedores manualmente:**
-   ```bash
-   docker-compose down -v
+   Salida esperada:
+
+   ```
+   NAME            TYPE           CLUSTER-IP       EXTERNAL-IP      PORT(S)          AGE
+   productpage     LoadBalancer   34.118.239.140   34.175.25.80     9080:32070/TCP   5m
+   reviews         ClusterIP      34.118.231.246   <none>           9083/TCP         5m
+   ```
+
+3. **Acceder a la aplicación web en el navegador:**  
+
+   Utiliza la IP externa del servicio `productpage` para acceder a la aplicación:
+
+   ```
+   http://34.175.25.80:9080
    ```
 
 ---
 
+## **Solución de problemas**
 
+Si tienes problemas con el despliegue o la aplicación, prueba las siguientes soluciones:
+
+1. **Verificar eventos del clúster para detectar errores:**  
+
+   ```bash
+   kubectl get events --sort-by=.metadata.creationTimestamp
+   ```
+
+2. **Revisar los logs de los pods individuales:**  
+
+   ```bash
+   kubectl logs deployment/productpage-v1
+   ```
+
+3. **Eliminar todos los recursos manualmente en caso de problemas:**  
+
+   ```bash
+   kubectl delete all --all
+   ```
+
+---
+
+## **Escalado de la aplicación**
+
+Puedes escalar los microservicios según las necesidades de carga con el siguiente comando:
+
+```bash
+kubectl scale deployment reviews-v1 --replicas=3
+```
+
+Esto creará más instancias del microservicio `reviews-v1`.
+
+---
+
+## **Monitoreo del clúster**
+
+Para observar métricas de rendimiento del clúster, utiliza el siguiente comando:
+
+```bash
+kubectl top nodes
+```
+
+---
+
+## **Notas adicionales**
+
+- Asegúrate de que los puertos correctos están expuestos para el acceso externo.
+- Si el balanceador de carga tarda en asignar una IP externa, espera unos minutos y verifica de nuevo con:
+
+  ```bash
+  kubectl get svc
+  ```
 
