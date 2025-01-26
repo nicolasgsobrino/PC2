@@ -222,5 +222,162 @@ Tambien se puede ejecutar desde un terminal remoto utilizando ssh usuario@34.175
 
 ---
 
+Aquí tienes el contenido para el archivo **README.md** del Bloque 3:
+
+---
+
+# **Bloque 3. Despliegue de la aplicación en microservicios**
+
+Este proyecto despliega una aplicación basada en microservicios utilizando **Docker Compose**, segmentando los servicios de una aplicación monolítica para ejecutarlos de manera independiente.
+Se suben todos los archivos a la maquina virtual de GoogleCloud para que no de errores de configuración y lo utilizamos para desplegar.
+
+<img width="1012" alt="Captura de pantalla 2025-01-26 a las 20 01 28" src="https://github.com/user-attachments/assets/421f8f1b-ef12-4175-ab34-bd552e18327f" />
+
+## **Estructura del proyecto**
+
+```
+Bloque_3/
+│-- deploy_docker.py         # Script de automatización para despliegue
+│-- Dockerfile.productpage   # Dockerfile para el servicio Product Page (Python)
+│-- Dockerfile.details       # Dockerfile para el servicio Details (Ruby)
+│-- Dockerfile.ratings       # Dockerfile para el servicio Ratings (NodeJS)
+│-- docker-compose.yml       # Definición de los servicios con Docker Compose
+│-- practica_creativa2/      # Repositorio clonado con los servicios
+```
+
+---
+
+## **Microservicios incluidos**
+
+La aplicación se ha dividido en los siguientes microservicios:
+
+1. **Product Page** (Python): Página de inicio de la aplicación.
+2. **Details** (Ruby): Muestra detalles adicionales de los productos.
+3. **Reviews** (Java): Muestra reseñas de los productos en diferentes versiones.
+4. **Ratings** (NodeJS): Proporciona la puntuación de los productos.
+
+---
+
+## **Instalación y despliegue**
+
+Para desplegar la aplicación, utiliza el script `deploy_docker.py` que permite gestionar todo el proceso de construcción y ejecución.
+
+### **1. Requisitos previos**
+Asegúrate de tener instalados los siguientes programas en tu sistema:
+
+- **Docker**  
+  ```bash
+  sudo apt update && sudo apt install docker.io -y
+  ```
+- **Docker Compose**  
+  ```bash
+  sudo apt install docker-compose -y
+  ```
+- **Git**  
+  ```bash
+  sudo apt install git -y
+  ```
+
+---
+
+## **Uso del script**
+
+El script `deploy_docker.py` permite realizar las siguientes operaciones:
+
+### **1. Construcción y despliegue de la aplicación**
+
+```bash
+python3 deploy_docker.py build
+```
+
+Este comando realiza los siguientes pasos:
+
+- Clona el repositorio `practica_creativa2` si no existe.
+- Compila el microservicio de **Reviews** utilizando Gradle.
+- Construye las imágenes Docker para todos los microservicios.
+- Levanta la aplicación usando **Docker Compose**.
+
+---
+
+### **2. Levantar la aplicación (si ya está construida)**
+
+```bash
+python3 deploy_docker.py start
+```
+
+Este comando inicia los contenedores en segundo plano usando Docker Compose.
+
+---
+
+### **3. Detener la aplicación**
+
+```bash
+python3 deploy_docker.py stop
+```
+
+Este comando detiene los contenedores sin eliminar los volúmenes de datos.
+
+---
+
+### **4. Eliminar la aplicación y limpiar el entorno**
+
+```bash
+python3 deploy_docker.py clean
+```
+
+Este comando realiza las siguientes acciones:
+
+- Detiene los contenedores y elimina los volúmenes.
+- Borra el repositorio clonado de la práctica.
+
+---
+
+## **Archivos importantes en el proyecto**
+
+- **`Dockerfile.productpage`**  
+  Construye la imagen del servicio Product Page utilizando Python.
+  
+- **`Dockerfile.details`**  
+  Construye la imagen del servicio Details con Ruby.
+
+- **`Dockerfile.ratings`**  
+  Construye la imagen del servicio Ratings utilizando NodeJS.
+
+- **`docker-compose.yml`**  
+  Define la configuración de los contenedores y su comunicación entre sí.
+
+---
+
+## **Verificación del despliegue**
+
+Una vez que la aplicación está en ejecución, puedes acceder a la interfaz web de la aplicación mediante:
+
+```
+http://34.175.221.139:9080
+```
+
+---
+
+## **Solución de problemas**
+
+Si encuentras algún problema, puedes hacer lo siguiente:
+
+1. **Verificar el estado de los contenedores:**
+   ```bash
+   docker ps -a
+   ```
+
+2. **Ver los registros de un contenedor específico:**
+   ```bash
+   docker logs productpage-14
+   ```
+
+3. **Eliminar todos los contenedores manualmente:**
+   ```bash
+   docker-compose down -v
+   ```
+
+---
+
 
 
